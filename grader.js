@@ -79,7 +79,15 @@ if(require.main == module) {
 		console.log('%s does not appear to be a valid url. Exiting.',program.url);
 		process.exit(1); // http://nodejs.org/api/process.html#process_process_exit_code
 	    } else {
-		console.log(result);
+		$ = cheerio.load(result)
+		var checks = loadChecks(program.checks).sort();
+		var out = {};
+		for(var ii in checks) {
+		    var present = $(checks[ii]).length > 0;
+		    out[checks[ii]] = present;
+		}
+		var outJson = JSON.stringify(out,null,4);
+		console.log(outJson);
 	    }
 	});   
     } else {
